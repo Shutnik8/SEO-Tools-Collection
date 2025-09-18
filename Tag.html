@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание тегов для YouTube</title>
+    <style>
+        /* Основные стили */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #3b5998;
+            margin-bottom: 10px;
+        }
+
+        input, textarea {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 15px;
+            resize: none;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #3b5998;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #365e92;
+        }
+
+        #output, #wordsList {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 12px;
+            background-color: #f7f9fa;
+            box-sizing: border-box;
+        }
+
+        .navigation {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .nav-link {
+            display: inline-block;
+            color: #3b5998;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid #3b5998;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background: white;
+        }
+
+        .nav-link:hover {
+            background: #3b5998;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 89, 152, 0.3);
+        }
+
+        /* Адаптивная верстка */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            h2 {
+                font-size: 1.2em;
+            }
+
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            input, textarea {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navigation">
+            <a href="index.html" class="nav-link">← Назад к главной</a>
+        </div>
+        <h1>Генератор тегов для YouTube</h1>
+        
+        <h2>Слова через запятую:</h2>
+        <input type="text" id="commaInput" placeholder="Введите слова, разделенные запятыми...">
+        
+        <h2>Слова через новую строку:</h2>
+        <textarea id="lineInput" placeholder="Введите слова, каждое с новой строки..."></textarea>
+        
+        <button onclick="generateTags()">Создать теги</button>
+        <button onclick="resetFields()">Сбросить</button>
+        
+        <h2>Список введенных слов:</h2>
+        <div id="wordsList"></div>
+
+        <h2>Результат:</h2>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function generateTags() {
+            const commaInput = document.getElementById('commaInput').value;
+            const lineInput = document.getElementById('lineInput').value;
+
+            let tags = [];
+            let allWords = [];
+
+            // Обработка ввода через запятую
+            if (commaInput.trim() !== '') {
+                const wordsFromComma = commaInput.split(',').map(word => word.trim());
+                allWords = allWords.concat(wordsFromComma);
+                const commaTags = wordsFromComma.map(word => '#' + capitalizeWords(word)); // Заглавные буквы в каждом слове
+                tags = tags.concat(commaTags);
+            }
+
+            // Обработка ввода через новую строку
+            if (lineInput.trim() !== '') {
+                const lines = lineInput.split('\n').filter(line => line.trim() !== '');
+                const lineTags = lines.map(line => {
+                    const words = line.trim().split(/\s+/); // Разделяем по пробелам
+                    allWords = allWords.concat(line.trim()); // Добавляем целую строку
+                    const tag = words.map(word => capitalizeWords(word)).join(''); // Формируем тег с заглавными буквами в каждом слове
+                    return '#' + tag; // Добавляем знак #
+                });
+                tags = tags.concat(lineTags);
+            }
+
+            // Формируем выводимый список слов с заглавной буквой
+            const formattedWords = allWords.map(word => capitalizeWords(word)).join(',');
+
+            // Выводим результат
+            document.getElementById('output').textContent = tags.join(' ');
+            document.getElementById('wordsList').textContent = formattedWords;
+        }
+
+        function capitalizeWords(word) {
+            // Первая буква каждого слова заглавная, остальные — строчные
+            return word.split(/\s+/).map(subWord => subWord.charAt(0).toUpperCase() + subWord.slice(1).toLowerCase()).join('');
+        }
+
+        function resetFields() {
+            document.getElementById('commaInput').value = '';
+            document.getElementById('lineInput').value = '';
+            document.getElementById('wordsList').textContent = '';
+            document.getElementById('output').textContent = '';
+        }
+    </script>
+</body>
+</html>

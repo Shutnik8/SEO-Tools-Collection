@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Расширенный поиск</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px 0; /* Добавили отступы сверху и снизу */
+      background: #000;
+      color: #00ff6a;
+      font-family: 'Share Tech Mono', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start; /* Изменили с center на flex-start */
+      min-height: 100vh;
+      overflow-x: hidden; /* Только горизонтальный скролл скрыт */
+      overflow-y: auto; /* Вертикальный скролл разрешен */
+    }
+
+    /* фон  */
+    .matrix-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 255, 100, 0.1) 0px,
+        rgba(0, 255, 100, 0.1) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      animation: matrixScroll 8s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes matrixScroll {
+      from { background-position-y: 0; }
+      to { background-position-y: 100vh; }
+    }
+
+    .container {
+      width: 90%;
+      max-width: 800px;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 30px 40px 100px 40px; /* Увеличили отступы */
+      border: 1px solid #00ff6a;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #00ff6a55;
+      margin: 20px 0 40px 0; /* Отступы сверху и снизу */
+      position: relative;
+      z-index: 10; /* Контейнер поверх фона */
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00ff6a;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      background: #000;
+      color: #00ff6a;
+      border: 1px solid #00ff6a;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      box-shadow: 0 0 8px #00ff6a;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+      margin-bottom: 40px; /* Увеличили отступ снизу */
+      position: relative;
+      z-index: 15; /* Кнопки поверх всего */
+      padding: 10px 0; /* Дополнительный отступ */
+    }
+
+    button {
+      flex: 1;
+      background: transparent;
+      color: #00ff6a;
+      border: 2px solid #00ff6a;
+      padding: 12px 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      font-size: 14px;
+      position: relative;
+      z-index: 3; /* Кнопки поверх всего */
+    }
+
+    button:hover {
+      background: #00ff6a;
+      color: #000;
+      box-shadow: 0 0 15px #00ff6a55;
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    /* подпись VS */
+    .signature {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      color: #00ff6a;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 32px; /* Еще больше уменьшили размер */
+      opacity: 0.4; /* Сделали еще менее заметной */
+      letter-spacing: 2px;
+      user-select: none;
+      pointer-events: none;
+      text-shadow: 0 0 5px #00ff6a, 0 0 10px #00ff6a;
+      animation: neonPulse 2s infinite alternate;
+      z-index: 5; /* Низкий z-index */
+    }
+
+    @keyframes neonPulse {
+      from {
+        text-shadow: 0 0 5px #00ff6a, 0 0 10px #00ff6a, 0 0 20px #00ff6a, 0 0 30px #00ff6a;
+        opacity: 0.7;
+      }
+      to {
+        text-shadow: 0 0 10px #00ff6a, 0 0 20px #00ff6a, 0 0 40px #00ff6a, 0 0 60px #00ff6a;
+        opacity: 1;
+      }
+    }
+
+    input, select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    appearance: none;       /* убираем дефолтный стиль браузера */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+    /* Навигация */
+    .navigation {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .nav-link {
+      display: inline-block;
+      color: #00ff6a;
+      text-decoration: none;
+      padding: 8px 16px;
+      border: 1px solid #00ff6a;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+
+    .nav-link:hover {
+      background: #00ff6a;
+      color: #000;
+      box-shadow: 0 0 10px #00ff6a55;
+    }
+
+    /* Медиа-запросы для мобильных устройств */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px 0;
+      }
+      
+      .container {
+        width: 95%;
+        padding: 20px 20px 80px 20px;
+        margin: 10px 0 30px 0;
+      }
+      
+      .button-group {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 30px;
+      }
+      
+      button {
+        padding: 15px;
+        font-size: 16px;
+      }
+    }
+
+
+
+
+  </style>
+</head>
+<body>
+  <div class="matrix-bg"></div>
+  <div class="container">
+    <div class="navigation">
+      <a href="index.html" class="nav-link">← Назад к главной</a>
+    </div>
+    <h2 id="typing-text" data-text="> Расширенный поиск"></h2>
+    
+    <label for="searchEngine">> Поисковая сеть:</label>
+    <select id="searchEngine">
+      <option value="google">Google</option>
+      <option value="bing">Bing</option>
+      <option value="yahoo">Yahoo</option>
+      <option value="yandex">Yandex</option>
+      <option value="baidu">Baidu</option>
+      <option value="duckduckgo">DuckDuckGo</option>
+      <option value="ecosia">Ecosia</option>
+      <option value="naver">Naver</option>
+      <option value="seznam">Seznam</option>
+      <option value="startpage">StartPage</option>
+    </select>
+
+    <label for="query">> Ключевое слово или фраза:</label>
+    <input type="text" id="query" placeholder="Введите ключевое слово или фразу">
+
+    <label for="exactPhrase">> Точная фраза:</label>
+    <input type="text" id="exactPhrase" placeholder="Введите точную фразу">
+
+    <label for="excludeWords">> Исключить слова:</label>
+    <input type="text" id="excludeWords" placeholder="Через запятую">
+
+    <label for="site">> Сайт:</label>
+    <input type="text" id="site" placeholder="Например, example.com">
+
+    <label for="filetype">> Тип файла:</label>
+    <input type="text" id="filetype" placeholder="Например, pdf">
+
+    <label for="siteType">> Тип сайта:</label>
+    <select id="siteType">
+      <option value="">Выберите тип сайта</option>
+      <option value="blog">Блог</option>
+      <option value="forum">Форум</option>
+      <option value="social network">Соцсеть</option>
+      <option value="quora">Quora</option>
+      <option value="medium">Medium</option>
+      <option value="blogger">Blogger</option>
+      <option value="pinterest">Pinterest</option>
+      <option value="reddit">Reddit</option>
+      <option value="tumblr">Tumblr</option>
+      <option value="vk">VK</option>
+      <option value="ok">Одноклассники</option>
+      <option value="telegram">Telegram</option>
+    </select>
+
+    <label for="afterDate">> После даты (год):</label>
+    <input type="text" id="afterDate" placeholder="Например, 2020">
+
+    <label for="beforeDate">> До даты (год):</label>
+    <input type="text" id="beforeDate" placeholder="Например, 2023">
+
+    <div class="button-group">
+      <button onclick="performSearch()">[ Искать ]</button>
+      <button type="button" onclick="resetForm()">[ Сбросить ]</button>
+    </div>
+  </div>
+
+  <div class="signature">VS</div>
+
+  <script>
+    // эффект печатающегося текста
+    document.addEventListener("DOMContentLoaded", () => {
+      const typingElement = document.getElementById("typing-text");
+      const text = typingElement.getAttribute("data-text");
+      let i = 0;
+      function typeChar() {
+        if (i < text.length) {
+          typingElement.textContent += text.charAt(i);
+          i++;
+          setTimeout(typeChar, 100);
+        }
+      }
+      typeChar();
+    });
+
+    function performSearch() {
+      const searchEngine = document.getElementById("searchEngine").value;
+      const query = document.getElementById("query").value;
+      const exactPhrase = document.getElementById("exactPhrase").value;
+      const excludeWords = document.getElementById("excludeWords").value;
+      const site = document.getElementById("site").value;
+      const filetype = document.getElementById("filetype").value;
+      const siteType = document.getElementById("siteType").value;
+      const afterDate = document.getElementById("afterDate").value;
+      const beforeDate = document.getElementById("beforeDate").value;
+
+      let searchQuery = query;
+      if (exactPhrase) searchQuery += ` "${exactPhrase}"`;
+      if (excludeWords) {
+        const words = excludeWords.split(",").map(word => ` -${word.trim()}`);
+        searchQuery += words.join("");
+      }
+      if (site) searchQuery += ` site:${site}`;
+      if (filetype) searchQuery += ` filetype:${filetype}`;
+      if (siteType) {
+        if (siteType === "blog") searchQuery += ` inurl:blog OR intitle:blog`;
+        else if (siteType === "forum") searchQuery += ` inurl:forum OR intitle:forum`;
+        else if (siteType === "social network") searchQuery += ` site:facebook.com OR site:twitter.com OR site:instagram.com`;
+        else if (siteType === "quora") searchQuery += ` site:quora.com`;
+        else if (siteType === "medium") searchQuery += ` site:medium.com`;
+        else if (siteType === "blogger") searchQuery += ` site:blogger.com`;
+        else if (siteType === "pinterest") searchQuery += ` site:pinterest.com`;
+        else if (siteType === "reddit") searchQuery += ` site:reddit.com`;
+        else if (siteType === "tumblr") searchQuery += ` site:tumblr.com`;
+        else if (siteType === "vk") searchQuery += ` site:vk.com`;
+        else if (siteType === "ok") searchQuery += ` site:ok.ru`;
+        else if (siteType === "telegram") searchQuery += ` site:t.me`;
+      }
+      if (afterDate) searchQuery += ` after:${afterDate}`;
+      if (beforeDate) searchQuery += ` before:${beforeDate}`;
+
+      let searchURL = '';
+      switch (searchEngine) {
+        case 'google': searchURL = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`; break;
+        case 'bing': searchURL = `https://www.bing.com/search?q=${encodeURIComponent(searchQuery)}`; break;
+        case 'yahoo': searchURL = `https://search.yahoo.com/search?p=${encodeURIComponent(searchQuery)}`; break;
+        case 'yandex': searchURL = `https://yandex.com/search/?text=${encodeURIComponent(searchQuery)}`; break;
+        case 'baidu': searchURL = `https://www.baidu.com/s?wd=${encodeURIComponent(searchQuery)}`; break;
+        case 'duckduckgo': searchURL = `https://duckduckgo.com/?q=${encodeURIComponent(searchQuery)}`; break;
+        case 'ecosia': searchURL = `https://www.ecosia.org/search?q=${encodeURIComponent(searchQuery)}`; break;
+        case 'naver': searchURL = `https://search.naver.com/search.naver?query=${encodeURIComponent(searchQuery)}`; break;
+        case 'seznam': searchURL = `https://search.seznam.cz/search?q=${encodeURIComponent(searchQuery)}`; break;
+        case 'startpage': searchURL = `https://www.startpage.com/do/search?q=${encodeURIComponent(searchQuery)}`; break;
+      }
+
+      window.open(searchURL, "_blank");
+    }
+
+    function resetForm() {
+      document.getElementById("searchEngine").value = "google";
+      document.getElementById("query").value = "";
+      document.getElementById("exactPhrase").value = "";
+      document.getElementById("excludeWords").value = "";
+      document.getElementById("site").value = "";
+      document.getElementById("filetype").value = "";
+      document.getElementById("siteType").value = "";
+      document.getElementById("afterDate").value = "";
+      document.getElementById("beforeDate").value = "";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UTM URL Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="matrix-bg"></div>
+  <div class="container">
+    <div class="navigation">
+      <a href="../index.html" class="nav-link">← Назад к главной</a>
+    </div>
+    <h1 id="typing-text" data-text="> UTM URL Generator"></h1>
+
+    <form id="utm-form">
+      <div class="form-group">
+        <label for="base-url">> Base URL:</label>
+        <input type="url" id="base-url" name="base-url" placeholder="https://example.com" required>
+      </div>
+       <div class="form-group">
+        <label for="source">> UTM Source:</label>
+        <input type="text" id="source" name="source" placeholder="tg / vk / blog">
+      </div>
+      <div class="form-group">
+        <label for="campaign">> UTM Campaign:</label>
+        <input type="text" id="campaign" name="campaign" placeholder="product-launch">
+      </div>
+     
+      <div class="form-group">
+        <label for="content">> UTM Content:</label>
+        <input type="text" id="content" name="content" placeholder="post-name">
+      </div>
+      <div class="form-group">
+        <label for="medium">> UTM Medium:</label>
+        <input type="text" id="medium" name="medium" placeholder="cpc / organic - Not Necessarily">
+      </div>
+      <div class="form-group">
+        <label for="term">> UTM Term:</label>
+        <input type="text" id="term" name="term" placeholder="2025-08-21">
+      </div>
+      <button type="submit">[ Generate URL ]</button>
+    </form>
+    <div id="result">
+      <h2>> Generated URL:</h2>
+      <textarea id="result-url" readonly></textarea>
+      <button id="copy-button">[ Copy to Clipboard ]</button>
+      <button type="button" id="reset-button">[ Reset ]</button>
+    </div>
+    <div class="signature">VS</div>
+  </div>
+  
+
+  <script src="script.js"></script>
+</body>
+</html>

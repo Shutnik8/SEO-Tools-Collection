@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Генератор robots.txt в стиле VK</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #EDEEF0;
+      color: #2C2D2E;
+      margin: 0;
+      padding: 10px;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #FFF;
+      max-width: 480px; /* Уменьшили на 20% с 600px */
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px; /* Уменьшили на 20% с 20px */
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+      border-radius: 6px;
+    }
+
+    h1 {
+      font-size: 19px; /* Уменьшили на 20% с 24px */
+      color: #4A76A8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px; /* Уменьшили на 20% с 8px */
+      margin: 0 0 24px 0; /* Уменьшили на 20% с 30px */
+      padding: 16px 0; /* Уменьшили на 20% с 20px */
+      text-align: center;
+      border-bottom: 2px solid #4A76A8;
+    }
+
+    h1::before {
+      content: "⚙️";
+      font-size: 1em;
+    }
+
+    label {
+      font-weight: 500;
+      color: #555;
+      display: block;
+      margin-bottom: 6px; /* Уменьшили на 20% с 8px */
+      font-size: 13px; /* Уменьшили на 20% с 16px */
+    }
+
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 10px 13px; /* Уменьшили на 20% с 12px 16px */
+      margin: 0 0 16px 0; /* Уменьшили на 20% с 20px */
+      border: 1px solid #CCC;
+      border-radius: 3px; /* Уменьшили на 20% с 4px */
+      font-size: 13px; /* Уменьшили на 20% с 16px */
+    }
+
+    .button {
+      display: inline-block;
+      padding: 10px 19px; /* Уменьшили на 20% с 12px 24px */
+      margin: 8px 4px 16px 0; /* Уменьшили на 20% с 10px 5px 20px 0 */
+      font-weight: bold;
+      color: #FFF;
+      background-color: #4A76A8;
+      border: none;
+      border-radius: 3px; /* Уменьшили на 20% с 4px */
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.3s;
+      font-size: 13px; /* Уменьшили на 20% с 16px */
+    }
+
+    .button:hover {
+      background-color: #3B5A7F;
+    }
+
+    .button:active {
+      background-color: #2E4561;
+    }
+
+    .button[style*="background-color: #e74c3c"]:hover {
+      background-color: #c0392b !important;
+    }
+
+    .button[style*="background-color: #e74c3c"]:active {
+      background-color: #a93226 !important;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px; /* Уменьшили на 20% с 150px */
+      margin: 16px 0; /* Уменьшили на 20% с 20px */
+      padding: 12px; /* Уменьшили на 20% с 15px */
+      border: 1px solid #CCC;
+      border-radius: 3px; /* Уменьшили на 20% с 4px */
+      resize: vertical;
+      font-family: monospace;
+      font-size: 12px; /* Уменьшили на 20% с 14px */
+    }
+
+    .navigation {
+      text-align: center;
+      position: sticky;
+      bottom: 0;
+      background: #EDEEF0;
+      padding: 12px 0; /* Уменьшили на 20% с 15px */
+      margin-top: 16px; /* Уменьшили на 20% с 20px */
+      border-top: 2px solid #4A76A8;
+    }
+
+    .nav-link {
+      display: inline-block;
+      color: #4A76A8;
+      text-decoration: none;
+      padding: 6px 13px; /* Уменьшили на 20% с 8px 16px */
+      border: 1px solid #4A76A8;
+      border-radius: 3px; /* Уменьшили на 20% с 4px */
+      transition: all 0.3s ease;
+      font-size: 12px; /* Уменьшили на 20% с 14px */
+      background: white;
+    }
+
+    .nav-link:hover {
+      background: #4A76A8;
+      color: white;
+    }
+
+    #agents {
+      margin-bottom: 24px; /* Уменьшили на 20% с 30px */
+    }
+
+    .agent {
+      margin-bottom: 16px; /* Уменьшили на 20% с 20px */
+      padding: 16px; /* Уменьшили на 20% с 20px */
+      border: 1px solid #ddd;
+      border-radius: 5px; /* Уменьшили на 20% с 6px */
+      background: #f9f9f9;
+      box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    }
+
+    .agent label {
+      margin-bottom: 5px; /* Уменьшили на 20% с 6px */
+      font-size: 12px; /* Уменьшили на 20% с 14px */
+    }
+
+    .agent input[type="text"] {
+      margin-bottom: 12px; /* Уменьшили на 20% с 15px */
+      font-size: 12px; /* Уменьшили на 20% с 14px */
+    }
+
+    /* Адаптивные медиа-запросы */
+    @media (max-width: 768px) {
+      body {
+        padding: 5px;
+      }
+      
+      .container {
+        padding: 12px; /* Уменьшили на 20% с 15px */
+        margin: 0;
+        max-width: 100%;
+      }
+      
+      h1 {
+        font-size: 16px; /* Уменьшили на 20% с 20px */
+        margin-bottom: 16px; /* Уменьшили на 20% с 20px */
+        padding: 12px 0; /* Уменьшили на 20% с 15px */
+      }
+      
+      .agent {
+        padding: 12px; /* Уменьшили на 20% с 15px */
+        margin-bottom: 12px; /* Уменьшили на 20% с 15px */
+      }
+      
+      .button {
+        width: 100%;
+        margin: 8px 0; /* Уменьшили на 20% с 10px */
+        padding: 12px; /* Уменьшили на 20% с 15px */
+        font-size: 14px; /* Уменьшили на 20% с 16px */
+      }
+      
+      input[type="text"], input[type="number"] {
+        padding: 12px; /* Уменьшили на 20% с 15px */
+        font-size: 14px; /* Уменьшили на 20% с 16px */
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 8px;
+      }
+      
+      h1 {
+        font-size: 14px;
+        padding: 8px 0;
+      }
+      
+      .agent {
+        padding: 8px;
+      }
+      
+      .button {
+        padding: 10px;
+        font-size: 12px;
+      }
+      
+      input[type="text"], input[type="number"] {
+        padding: 10px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Генератор robots.txt</h1>
+
+    <div id="agents">
+      <div class="agent">
+        <label>User-agent:</label>
+        <input type="text" class="userAgent" placeholder="* (для всех ботов)" value="*"><br>
+        <label>Allow:</label>
+        <input type="text" class="allow" placeholder="/"><br>
+        <label>Disallow:</label>
+        <input type="text" class="disallow" placeholder="/store"><br>
+      </div>
+    </div>
+
+    <button class="button" onclick="addAgent()">Добавить User-agent</button><br><br>
+
+    <label>Crawl-delay (задержка между запросами):</label>
+    <input type="number" id="crawlDelay" placeholder="1"><br>
+
+    <label>Host (основной домен сайта):</label>
+    <input type="text" id="host" placeholder="example.com"><br>
+
+    <label>Sitemap (URL карты сайта):</label>
+    <input type="text" id="sitemap" placeholder="https://example.com/sitemap.xml"><br>
+
+    <button class="button" onclick="generateRobotsTxt()">Создать robots.txt</button>
+    <button class="button" onclick="saveRobotsTxt()">Сохранить robots.txt</button>
+    <button class="button" onclick="resetAll()" style="background-color: #e74c3c;">Сбросить все</button>
+    <textarea id="output" readonly></textarea>
+    
+    <!-- Кнопка навигации внизу -->
+    <div class="navigation">
+      <a href="index.html" class="nav-link">← Назад к главной</a>
+    </div>
+  </div>
+
+  <script>
+    function addAgent() {
+      const agentsContainer = document.getElementById('agents');
+      const agentDiv = document.createElement('div');
+      agentDiv.classList.add('agent');
+      agentDiv.innerHTML = `
+        <label>User-agent:</label>
+        <input type="text" class="userAgent" placeholder="* (для всех ботов)"><br>
+        <label>Allow:</label>
+        <input type="text" class="allow" placeholder="/"><br>
+        <label>Disallow:</label>
+        <input type="text" class="disallow" placeholder="/store"><br>
+      `;
+      agentsContainer.appendChild(agentDiv);
+    }
+
+    function generateRobotsTxt() {
+      const agents = document.querySelectorAll('.agent');
+      let robotsTxt = '';
+
+      agents.forEach(agent => {
+        const userAgent = agent.querySelector('.userAgent').value || '*';
+        const allow = agent.querySelector('.allow').value;
+        const disallow = agent.querySelector('.disallow').value;
+
+        robotsTxt += `User-agent: ${userAgent}\n`;
+        if (allow) {
+          robotsTxt += `Allow: ${allow}\n`;
+        }
+        if (disallow) {
+          robotsTxt += `Disallow: ${disallow}\n`;
+        }
+        robotsTxt += `\n`;
+      });
+
+      const crawlDelay = document.getElementById('crawlDelay').value;
+      if (crawlDelay) {
+        robotsTxt += `Crawl-delay: ${crawlDelay}\n`;
+      }
+
+      const host = document.getElementById('host').value;
+      if (host) {
+        robotsTxt += `Host: ${host}\n`;
+      }
+
+      const sitemap = document.getElementById('sitemap').value;
+      if (sitemap) {
+        robotsTxt += `Sitemap: ${sitemap}\n`;
+      }
+
+      document.getElementById("output").value = robotsTxt;
+    }
+
+    function saveRobotsTxt() {
+      const robotsTxtContent = document.getElementById("output").value;
+      const blob = new Blob([robotsTxtContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'robots.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function resetAll() {
+      // Очищаем контейнер agents, оставляя только первый элемент
+      const agentsContainer = document.getElementById('agents');
+      agentsContainer.innerHTML = `
+        <div class="agent">
+          <label>User-agent:</label>
+          <input type="text" class="userAgent" placeholder="* (для всех ботов)" value="*"><br>
+          <label>Allow:</label>
+          <input type="text" class="allow" placeholder="/"><br>
+          <label>Disallow:</label>
+          <input type="text" class="disallow" placeholder="/store"><br>
+        </div>
+      `;
+      
+      // Очищаем остальные поля
+      document.getElementById('crawlDelay').value = '';
+      document.getElementById('host').value = '';
+      document.getElementById('sitemap').value = '';
+      document.getElementById('output').value = '';
+    }
+  </script>
+</body>
+</html>

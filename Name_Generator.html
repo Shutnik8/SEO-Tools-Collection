@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор случайных никнеймов</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .controls {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        #nicknameResult {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            margin: 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 2px dashed #667eea;
+        }
+
+        .navigation {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .nav-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background: white;
+        }
+
+        .nav-link:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navigation">
+            <a href="index.html" class="nav-link">← Назад к главной</a>
+        </div>
+        <h1>Генератор случайных никнеймов</h1>
+        <div class="controls">
+            <label for="language">Выберите язык:</label>
+            <select id="language">
+                <option value="ru">Русский</option>
+                <option value="en" selected>Английский</option>
+            </select>
+
+            <label for="nicknameLength">Длина никнейма:</label>
+            <input type="number" id="nicknameLength" value="8" min="3" max="15">
+
+            <label>
+                <input type="checkbox" id="includeNumbers" checked> Включить числа
+            </label>
+
+            <button id="generateButton">Сгенерировать</button>
+        </div>
+        <div class="result">
+            <h2>Ваш никнейм:</h2>
+            <p id="nicknameResult">...</p>
+        </div>
+    </div>
+    <script>
+        const russianWords = [
+            'Волк', 'Орел', 'Тигр', 'Лев', 'Медведь', 'Лиса', 'Змея', 'Сокол', 'Ястреб', 'Рысь',
+            'Барс', 'Волк', 'Орёл', 'Тигр', 'Лев', 'Медведь', 'Лиса', 'Змея', 'Сокол', 'Ястреб',
+            'Гром', 'Молния', 'Буря', 'Ветер', 'Огонь', 'Лед', 'Камень', 'Сталь', 'Железо', 'Золото',
+            'Серебро', 'Бронза', 'Алмаз', 'Рубин', 'Сапфир', 'Изумруд', 'Топаз', 'Аметист', 'Опал', 'Жемчуг'
+        ];
+
+        const englishWords = [
+            'Wolf', 'Eagle', 'Tiger', 'Lion', 'Bear', 'Fox', 'Snake', 'Falcon', 'Hawk', 'Lynx',
+            'Thunder', 'Lightning', 'Storm', 'Wind', 'Fire', 'Ice', 'Stone', 'Steel', 'Iron', 'Gold',
+            'Silver', 'Bronze', 'Diamond', 'Ruby', 'Sapphire', 'Emerald', 'Topaz', 'Amethyst', 'Opal', 'Pearl',
+            'Shadow', 'Phantom', 'Ghost', 'Spirit', 'Soul', 'Heart', 'Mind', 'Sword', 'Shield', 'Arrow'
+        ];
+
+        document.getElementById('generateButton').addEventListener('click', function() {
+            const language = document.getElementById('language').value;
+            const length = parseInt(document.getElementById('nicknameLength').value);
+            const includeNumbers = document.getElementById('includeNumbers').checked;
+            
+            const words = language === 'ru' ? russianWords : englishWords;
+            let nickname = '';
+            
+            // Генерируем никнейм
+            const wordCount = Math.ceil(length / 8); // Примерно 8 символов на слово
+            for (let i = 0; i < wordCount; i++) {
+                const randomWord = words[Math.floor(Math.random() * words.length)];
+                nickname += randomWord;
+            }
+            
+            // Обрезаем до нужной длины
+            nickname = nickname.substring(0, length);
+            
+            // Добавляем числа если нужно
+            if (includeNumbers && nickname.length < length) {
+                const numbers = '0123456789';
+                const remainingLength = length - nickname.length;
+                for (let i = 0; i < remainingLength; i++) {
+                    nickname += numbers[Math.floor(Math.random() * numbers.length)];
+                }
+            }
+            
+            // Если никнейм короче нужной длины, дополняем случайными символами
+            if (nickname.length < length) {
+                const chars = language === 'ru' ? 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя' : 'abcdefghijklmnopqrstuvwxyz';
+                while (nickname.length < length) {
+                    nickname += chars[Math.floor(Math.random() * chars.length)];
+                }
+            }
+            
+            document.getElementById('nicknameResult').textContent = nickname;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Tools Collection - Коллекция SEO инструментов</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .tool-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .tool-card h3 {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .tool-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .tool-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .tool-link:hover::before {
+            left: 100%;
+        }
+
+        .tool-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .features {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 40px;
+            margin-top: 50px;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .feature-item h3 {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .feature-item p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5em;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .tool-card {
+                padding: 20px;
+            }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SEO Tools Collection</h1>
+            <p>Полная коллекция профессиональных SEO инструментов для оптимизации вашего сайта и улучшения поискового ранжирования</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number">7</span>
+                <span class="stat-label">Инструментов</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-number">0</span>
+                <span class="stat-label">Регистрации</span>
+            </div>
+        </div>
+
+        <div class="tools-grid">
+            <div class="tool-card">
+                <span class="tool-icon">🔍</span>
+                <h3>Расширенный поиск</h3>
+                <p>Мощный инструмент для поиска по различным поисковым системам с расширенными фильтрами и операторами поиска.</p>
+                <a href="Google_ALL_Search.html" class="tool-link">Открыть инструмент</a>
+            </div>
+
+            <div class="tool-card">
+                <span class="tool-icon">🏷️</span>
+                <h3>Генератор тегов YouTube</h3>
+                <p>Создавайте эффективные теги для YouTube видео, которые помогут увеличить видимость вашего контента.</p>
+                <a href="Tag.html" class="tool-link">Открыть инструмент</a>
+            </div>
+
+            <div class="tool-card">
+                <span class="tool-icon">🤖</span>
+                <h3>Генератор robots.txt</h3>
+                <p>Создавайте правильные файлы robots.txt для управления индексацией вашего сайта поисковыми роботами.</p>
+                <a href="Robots_txt_generator.html" class="tool-link">Открыть инструмент</a>
+            </div>
+
+            <div class="tool-card">
+                <span class="tool-icon">📊</span>
+                <h3>Генератор метатегов</h3>
+                <p>Создавайте метатеги Schema.org и Open Graph для улучшения отображения в социальных сетях и поисковиках.</p>
+                <a href="Schema_org_OpenGraph.html" class="tool-link">Открыть инструмент</a>
+            </div>
+
+            <div class="tool-card">
+                <span class="tool-icon">🗺️</span>
+                <h3>Генератор Sitemap</h3>
+                <p>Создавайте XML карты сайта для лучшей индексации ваших страниц поисковыми системами.</p>
+                <a href="Sitemap_generator.html" class="tool-link">Открыть инструмент</a>
+            </div>
+
+            <div class="tool-card">
+                <span class="tool-icon">👤</span>
+                <h3>Генератор никнеймов</h3>
+                <p>Создавайте уникальные и креативные никнеймы для различных платформ и сервисов.</p>
+                <a href="Name_Generator.html" class="tool-link">Открыть инструмент</a>
+            </div>
+
+            <div class="tool-card">
+                <span class="tool-icon">🔗</span>
+                <h3>UTM URL Generator</h3>
+                <p>Создавайте UTM-ссылки для отслеживания эффективности ваших маркетинговых кампаний.</p>
+                <a href="UTM/Utm.html" class="tool-link">Открыть инструмент</a>
+            </div>
+        </div>
+
+        <div class="features">
+            <h2>Почему выбирают наши инструменты?</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <span class="feature-icon">⚡</span>
+                    <h3>Быстро</h3>
+                    <p>Все инструменты работают мгновенно без загрузки и ожидания</p>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🔒</span>
+                    <h3>Безопасно</h3>
+                    <p>Все данные обрабатываются локально, ничего не передается на серверы</p>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">💻</span>
+                    <h3>Удобно</h3>
+                    <p>Современный и интуитивно понятный интерфейс для всех устройств</p>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🎯</span>
+                    <h3>Эффективно</h3>
+                    <p>Профессиональные инструменты для реального улучшения SEO</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p> 2025 SEO Tools Collection</p>
+        </div>
+    </div>
+</body>
+</html>
+
