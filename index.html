@@ -17,6 +17,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #333;
         }
 
         .container {
@@ -27,11 +28,42 @@
             padding: 40px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .donate-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .donate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .donate-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(255, 107, 107, 0.3);
         }
 
         .header {
             text-align: center;
             margin-bottom: 50px;
+            padding-top: 20px;
         }
 
         .header h1 {
@@ -54,7 +86,8 @@
 
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            /* Исправлено: 280px вместо 350px для поддержки узких смартфонов */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             margin-bottom: 50px;
         }
@@ -68,6 +101,8 @@
             border: 2px solid transparent;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .tool-card::before {
@@ -103,6 +138,7 @@
             color: #666;
             line-height: 1.6;
             margin-bottom: 25px;
+            flex-grow: 1; /* Чтобы кнопки всегда были внизу карточки на одной линии */
         }
 
         .tool-link {
@@ -116,6 +152,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
 
         .tool-link::before {
@@ -143,6 +180,7 @@
             border-radius: 15px;
             padding: 40px;
             margin-top: 50px;
+            margin-bottom: 50px;
         }
 
         .features h2 {
@@ -182,11 +220,57 @@
 
         .footer {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 30px;
             padding-top: 30px;
             border-top: 2px solid #eee;
             color: #666;
         }
+
+        .donate-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 50px 0;
+            text-align: center;
+            border: 2px dashed #667eea;
+        }
+
+        .donate-section h2 {
+            font-size: 2.2em;
+            color: #333;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .donate-section p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            font-size: 1.1em;
+        }
+
+        .donate-widget {
+            margin: 30px auto;
+            max-width: 600px;
+            width: 100%;
+            /* Добавляем Flexbox для центрирования содержимого */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Убираем лишние тени и фон, если они мешают визуально, 
+               или оставляем для красивой рамки */
+            background: white; 
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 10px; /* Небольшой отступ внутри рамки */
+        }
+
+
 
         @media (max-width: 768px) {
             .container {
@@ -198,12 +282,51 @@
             }
 
             .tools-grid {
-                grid-template-columns: 1fr;
+                /* На планшетах одна колонка или две, автофит сам решит */
                 gap: 20px;
             }
 
             .tool-card {
                 padding: 20px;
+            }
+
+            .donate-button {
+                position: static;
+                margin: 0 auto 20px;
+                display: inline-flex;
+            }
+
+            .donate-section {
+                padding: 25px;
+                margin: 30px 0;
+            }
+
+            .donate-section h2 {
+                font-size: 1.8em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .donate-button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .donate-section {
+                padding: 20px;
+            }
+            
+            /* Фикс для статистики на очень маленьких экранах */
+            .stats {
+                gap: 30px;
             }
         }
 
@@ -236,104 +359,149 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <!-- Кнопка доната -->
+        <button class="donate-button" onclick="document.getElementById('donate-section').scrollIntoView({behavior: 'smooth'})">
+            ❤️ Поддержать проект
+        </button>
+
+        <header class="header">
             <h1>SEO Tools Collection</h1>
             <p>Полная коллекция профессиональных SEO инструментов для оптимизации вашего сайта и улучшения поискового ранжирования</p>
-        </div>
+        </header>
 
-        <div class="stats">
-            <div class="stat-item">
-                <span class="stat-number">7</span>
-                <span class="stat-label">Инструментов</span>
-            </div>
-
-            <div class="stat-item">
-                <span class="stat-number">0</span>
-                <span class="stat-label">Регистрации</span>
-            </div>
-        </div>
-
-        <div class="tools-grid">
-            <div class="tool-card">
-                <span class="tool-icon">🔍</span>
-                <h3>Расширенный поиск</h3>
-                <p>Мощный инструмент для поиска по различным поисковым системам с расширенными фильтрами и операторами поиска.</p>
-                <a href="Google_ALL_Search.html" class="tool-link">Открыть инструмент</a>
-            </div>
-
-            <div class="tool-card">
-                <span class="tool-icon">🏷️</span>
-                <h3>Генератор тегов YouTube</h3>
-                <p>Создавайте эффективные теги для YouTube видео, которые помогут увеличить видимость вашего контента.</p>
-                <a href="Tag.html" class="tool-link">Открыть инструмент</a>
-            </div>
-
-            <div class="tool-card">
-                <span class="tool-icon">🤖</span>
-                <h3>Генератор robots.txt</h3>
-                <p>Создавайте правильные файлы robots.txt для управления индексацией вашего сайта поисковыми роботами.</p>
-                <a href="Robots_txt_generator.html" class="tool-link">Открыть инструмент</a>
-            </div>
-
-            <div class="tool-card">
-                <span class="tool-icon">📊</span>
-                <h3>Генератор метатегов</h3>
-                <p>Создавайте метатеги Schema.org и Open Graph для улучшения отображения в социальных сетях и поисковиках.</p>
-                <a href="Schema_org_OpenGraph.html" class="tool-link">Открыть инструмент</a>
-            </div>
-
-            <div class="tool-card">
-                <span class="tool-icon">🗺️</span>
-                <h3>Генератор Sitemap</h3>
-                <p>Создавайте XML карты сайта для лучшей индексации ваших страниц поисковыми системами.</p>
-                <a href="Sitemap_generator.html" class="tool-link">Открыть инструмент</a>
-            </div>
-
-            <div class="tool-card">
-                <span class="tool-icon">👤</span>
-                <h3>Генератор никнеймов</h3>
-                <p>Создавайте уникальные и креативные никнеймы для различных платформ и сервисов.</p>
-                <a href="Name_Generator.html" class="tool-link">Открыть инструмент</a>
-            </div>
-
-            <div class="tool-card">
-                <span class="tool-icon">🔗</span>
-                <h3>UTM URL Generator</h3>
-                <p>Создавайте UTM-ссылки для отслеживания эффективности ваших маркетинговых кампаний.</p>
-                <a href="UTM/Utm.html" class="tool-link">Открыть инструмент</a>
-            </div>
-        </div>
-
-        <div class="features">
-            <h2>Почему выбирают наши инструменты?</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <span class="feature-icon">⚡</span>
-                    <h3>Быстро</h3>
-                    <p>Все инструменты работают мгновенно без загрузки и ожидания</p>
+        <main>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number">7</span>
+                    <span class="stat-label">Инструментов</span>
                 </div>
-                <div class="feature-item">
-                    <span class="feature-icon">🔒</span>
-                    <h3>Безопасно</h3>
-                    <p>Все данные обрабатываются локально, ничего не передается на серверы</p>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">💻</span>
-                    <h3>Удобно</h3>
-                    <p>Современный и интуитивно понятный интерфейс для всех устройств</p>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">🎯</span>
-                    <h3>Эффективно</h3>
-                    <p>Профессиональные инструменты для реального улучшения SEO</p>
+
+                <div class="stat-item">
+                    <span class="stat-number">0</span>
+                    <span class="stat-label">Регистрации</span>
                 </div>
             </div>
-        </div>
-<iframe src="https://yoomoney.ru/quickpay/fundraise/widget?billNumber=1F303FASBB3.260104&" width="500" height="480" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
-        <div class="footer">
-            <p> 2025-2026 SEO Tools Collection</p>
-        </div>
+
+            <section class="tools-grid">
+                <article class="tool-card">
+                    <span class="tool-icon" role="img" aria-label="поиск">🔍</span>
+                    <h3>Расширенный поиск</h3>
+                    <p>Мощный инструмент для поиска по различным поисковым системам с расширенными фильтрами и операторами поиска.</p>
+                    <a href="Google_ALL_Search.html" class="tool-link">Открыть инструмент</a>
+                </article>
+
+                <article class="tool-card">
+                    <span class="tool-icon" role="img" aria-label="теги">🏷️</span>
+                    <h3>Генератор тегов YouTube</h3>
+                    <p>Создавайте эффективные теги для YouTube видео, которые помогут увеличить видимость вашего контента.</p>
+                    <a href="Tag.html" class="tool-link">Открыть инструмент</a>
+                </article>
+
+                <article class="tool-card">
+                    <span class="tool-icon" role="img" aria-label="робот">🤖</span>
+                    <h3>Генератор robots.txt</h3>
+                    <p>Создавайте правильные файлы robots.txt для управления индексацией вашего сайта поисковыми роботами.</p>
+                    <a href="Robots_txt_generator.html" class="tool-link">Открыть инструмент</a>
+                </article>
+
+                <article class="tool-card">
+                    <span class="tool-icon" role="img" aria-label="график">📊</span>
+                    <h3>Генератор метатегов</h3>
+                    <p>Создавайте метатеги Schema.org и Open Graph для улучшения отображения в социальных сетях и поисковиках.</p>
+                    <a href="Schema_org_OpenGraph.html" class="tool-link">Открыть инструмент</a>
+                </article>
+
+                <article class="tool-card">
+                    <span class="tool-icon" role="img" aria-label="карта">🗺️</span>
+                    <h3>Генератор Sitemap</h3>
+                    <p>Создавайте XML карты сайта для лучшей индексации ваших страниц поисковыми системами.</p>
+                    <a href="Sitemap_generator.html" class="tool-link">Открыть инструмент</a>
+                </article>
+
+                <article class="tool-card">
+                    <span class="tool-icon" role="img" aria-label="пользователь">👤</span>
+                    <h3>Генератор никнеймов</h3>
+                    <p>Создавайте уникальные и креативные никнеймы для различных платформ и сервисов.</p>
+                    <a href="Name_Generator.html" class="tool-link">Открыть инструмент</a>
+                </article>
+
+                <article class="tool-card">
+                    <span class="tool-icon" role="img" aria-label="ссылка">🔗</span>
+                    <h3>UTM URL Generator</h3>
+                    <p>Создавайте UTM-ссылки для отслеживания эффективности ваших маркетинговых кампаний.</p>
+                    <a href="UTM/Utm.html" class="tool-link">Открыть инструмент</a>
+                </article>
+            </section>
+
+             <!-- Секция с донатом -->
+            <section class="donate-section" id="donate-section">
+                <h2>Поддержите проект</h2>
+                <p>Если наши инструменты помогли вам, пожалуйста, поддержите проект! Ваша поддержка помогает развивать и улучшать наши SEO инструменты.</p>
+                
+                <div class="donate-widget">
+                    <iframe src="https://yoomoney.ru/quickpay/fundraise/widget?billNumber=1F303FASBB3.260104&" 
+                            width="100%" 
+                            height="350" 
+                            frameborder="0" 
+                            allowtransparency="true" 
+                            scrolling="no"
+                            loading="lazy"
+                            style="max-width: 450px;"> <!-- Ограничиваем ширину фрейма, чтобы он встал по центру -->
+                    </iframe>
+                </div>
+                
+                <p style="font-size: 0.9em; color: #888; margin-top: 20px;">
+                    💖 Спасибо за вашу поддержку!
+                </p>
+            </section>
+
+
+            <section class="features">
+                <h2>Почему выбирают наши инструменты?</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <span class="feature-icon" role="img" aria-label="молния">⚡</span>
+                        <h3>Быстро</h3>
+                        <p>Все инструменты работают мгновенно без загрузки и ожидания</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon" role="img" aria-label="замок">🔒</span>
+                        <h3>Безопасно</h3>
+                        <p>Все данные обрабатываются локально, ничего не передается на серверы</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon" role="img" aria-label="ноутбук">💻</span>
+                        <h3>Удобно</h3>
+                        <p>Современный и интуитивно понятный интерфейс для всех устройств</p>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon" role="img" aria-label="цель">🎯</span>
+                        <h3>Эффективно</h3>
+                        <p>Профессиональные инструменты для реального улучшения SEO</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>© 2025-2026 SEO Tools Collection</p>
+        </footer>
     </div>
+
+    <script>
+        // Скрипт для плавной прокрутки
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
-
