@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://shutnik8.github.io/SEO-Tools-Collection/sitemap.xml
